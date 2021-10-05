@@ -60,6 +60,7 @@ HIGH_LIMIT_PERCENT = getPercentParameter('VAR_HIGH_LIMIT_PERCENT')
 CLOSE_TO_HIGH_ALERT = os.getenv('VAR_CLOSE_TO_HIGH_ALERT')
 LOW_LIMIT_PERCENT = 100 - getPercentParameter('VAR_LOW_LIMIT_PERCENT')
 CLOSE_TO_LOW_ALERT = os.getenv('VAR_CLOSE_TO_LOW_ALERT')
+DARKMODE = os.getenv('XBARDarkMode')
 
 
 # INIT DATABASE
@@ -127,25 +128,30 @@ else :
     distanceColor = "#FF{}{}".format(rbColor,rbColor)
 
 # OUTPUT
-print("{} ${:,} {} | color={}".format(COIN_NAME, lastPriceFloat, MARKET_NAME, distanceColor))
+printColor = "#000000"
+if DARKMODE == 'true' :
+    printColor = "#FFFFFF"
+    print("{} ${:,} {} | color={}".format(COIN_NAME, lastPriceFloat, MARKET_NAME, distanceColor))
+else :
+    print("{} ${:,} {}".format(COIN_NAME, lastPriceFloat, MARKET_NAME))
 print('---')
 print('My Investment')
-print("{:,} {} | color=#ffffff".format(float(COIN_INVESTMENT), COIN_NAME))
-print("${:,} {} | color=#ffffff".format(round(lastPriceFloat*float(COIN_INVESTMENT),2), MARKET_NAME))
+print("{:,} {} | color={}".format(float(COIN_INVESTMENT), COIN_NAME, printColor))
+print("${:,} {} | color={}".format(round(lastPriceFloat*float(COIN_INVESTMENT),2), MARKET_NAME, printColor))
 print('---')
 print('Last Price Distance')
-print("Distance From High: {:.0%} | color=#ffffff".format(percentageLossFromMax/100))
-print("Distance From Low: {:.0%} | color=#ffffff".format(1-percentageLossFromMax/100))
+print("Distance From High: {:.0%} | color={}".format(percentageLossFromMax/100, printColor))
+print("Distance From Low: {:.0%} | color={}".format(1-percentageLossFromMax/100, printColor))
 print('---')
 print('Trading Data')
 print("High: ${:,} {} | color=#0000ff".format(highPriceFloat, MARKET_NAME))
 print("Low: ${:,} {} | color=#ff00ff".format(lowPriceFloat, MARKET_NAME))
 print("Bid: ${:,} {} | color=#00ff00".format(bidPriceFloat, MARKET_NAME))
 print("Ask: ${:,} {} | color=#ff0000".format(askPriceFloat, MARKET_NAME))
-print("Spread: ${:,} {}| color=#ffffff".format(round(askPriceFloat-bidPriceFloat,2), MARKET_NAME))
-print("Volume (24h): {:,} {}".format(round(volumePriceFloat,2), COIN_NAME))
-print("Volume WAP: ${:,} {}".format(volumewapPriceFloat, MARKET_NAME))
-print(convertDateToLocalDateTime(payload['created_at']))
+print("Spread: ${:,} {} | color={}".format(round(askPriceFloat-bidPriceFloat,2), MARKET_NAME, printColor))
+print("Volume (24h): {:,} {} | color={}".format(round(volumePriceFloat,2), COIN_NAME, printColor))
+print("Volume WAP: ${:,} {} | color={}".format(volumewapPriceFloat, MARKET_NAME, printColor))
+print("{} | color={}".format(convertDateToLocalDateTime(payload['created_at']),printColor))
 print('---')
 print('Bitso')
 print('-- Bitso Wallet | href=https://bitso.com/wallet')
